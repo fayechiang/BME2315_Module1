@@ -8,6 +8,7 @@
 from patient_faye import *
 import matplotlib.pyplot as plt
 import statistics
+from scipy import stats
 
 Patient.instantiate_from_csv("/Users/fayechiang/Library/Mobile Documents/com~apple~CloudDocs/Computational BME/Module 1/Metadata and Protein Data for Module 1.csv")
 
@@ -33,6 +34,10 @@ for patient in Patient.filter(Patient.all_patients, cognitive_status="Dementia")
     ptau_dementia.append(patient.ptau)
 for patient in Patient.filter(Patient.all_patients, cognitive_status="No dementia"):
     ptau_no_dementia.append(patient.ptau)
+
+#this tests if mean pTAU differs between donors with and without dementia
+t_stat, p_val = stats.ttest_ind(ptau_dementia, ptau_no_dementia)
+print(f't_stat = {t_stat}, p_val = {p_val}')
 
 #this calculates the standard deviation for each group
 x_dementia_bar = statistics.mean(ptau_dementia)
